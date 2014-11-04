@@ -37,31 +37,23 @@ public class TetrisMap {
 	// TODO throws indexoutofbound exception
 	public boolean addTetromino(int colidx, TetrominoAbs tet){
 		Vector<Integer> diff= tet.getDiff();
-		System.out.println("diff: " + diff);
 		// get height diff
 		for( int c = 0; c<+tet.col; ++c){
 			diff.set(c, diff.get(c) + map.get(c+colidx).size());
 		}
-		System.out.println("heigt diff: " + diff);
 		int max = Collections.max(diff);
-		System.out.println("max: " + max);
 		// create vector of int where int says how many blanks
 		// that column needs
 		for(int i= 0; i< diff.size(); ++i){
 			diff.set(i, Math.abs((diff.get(i)-max)));
 		}
-		System.out.println("blanks needed: " + diff);
 
 		for(int c = colidx; c< colidx+tet.col; ++c){
 			for(int loop=0; loop< diff.get(c-colidx); ++loop){
-				System.out.println("Blank was added to col " + c);
 				map.get(c).add(Block.Blank);
 				
 			}
-			System.out.println("addAll cleancol: " +(c-colidx));
 			map.get(c).addAll(tet.getCleanCol(c-colidx));
-			System.out.println("cleanCol: " + tet.getCleanCol(c-colidx));
-			System.out.println(this.printMap());	
 		}
 		
 		
@@ -147,7 +139,7 @@ public class TetrisMap {
 		return result;
 	}
 	public boolean isGameOver(){
-		return getHighestColSize()> row;
+		return getHighestColSize()>= row;
 	}
 	// TODO throw indexoutofbound if requesting a higher row than this.row	
 	public Vector<Block> getLine(int row){
@@ -172,8 +164,8 @@ public class TetrisMap {
 	}
 	public String printMap(){
 		String result="";
-		for(int row = this.row; row>0; --row){
-			result += "#"+getLineAsString(row) + "#"+row+"\n";
+		for(int row = this.row-1; row>=0; --row){
+			result += "#"+getLineAsString(row) + "#"+(row+1)+"\n";
 		}
 		result+= new String(new char[col+2]).replace('\0', '#');
 		
