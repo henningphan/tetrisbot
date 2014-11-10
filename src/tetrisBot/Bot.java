@@ -54,7 +54,8 @@ public class Bot {
 		listHeur.add(h);
 		h = new PunishColHoles().setWeight(weights.get(3));
 		listHeur.add(h);
-
+		h = new ClearLineBonus().setWeight(weights.get(4));
+		listHeur.add(h);
 		
 		
 		h = new AvoidGameOver().setWeight(100);
@@ -148,8 +149,8 @@ public class Bot {
 			}
 	
 		}
-		System.out.println(bot.gm.printMap());
-		System.out.println(bot.gm.getHighestColSize());
+//		System.out.println(bot.gm.printMap());
+//		System.out.println(bot.gm.getHighestColSize());
 		System.out.println("pieces placed: " + i+", linesCleared: " + linesClrCount);
 		bot.writeClose();
 	}
@@ -159,11 +160,11 @@ public class Bot {
 		weights.add(0); //smooth
 		weights.add(3); //lowAsPossible
 		weights.add(6); //punishHoles
+		weights.add(0); //clearLineBonus
 						// avoidGameOver(100);
-		customBot(weights,7,true,1000);
-		System.exit(0);
+//		customBot(weights,7,true,40000);
 		for(int i=0; i<10; ++i){
-			customBot(weights, i, false, 15000);
+			customBot(weights, i, false, 40000);
 			System.out.println("Iteration: " +i);
 		}
 	}
