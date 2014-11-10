@@ -56,6 +56,8 @@ public class Bot {
 		listHeur.add(h);
 		h = new ClearLineBonus().setWeight(weights.get(4));
 		listHeur.add(h);
+		h = new LandingHeight().setWeight(weights.get(5));
+		listHeur.add(h);
 		
 		
 		h = new AvoidGameOver().setWeight(100);
@@ -161,6 +163,7 @@ public class Bot {
 		weights.add(3); //lowAsPossible
 		weights.add(6); //punishHoles
 		weights.add(0); //clearLineBonus
+		weights.add(0); //LandingHeight
 						// avoidGameOver(100);
 //		customBot(weights,7,true,40000);
 		for(int i=0; i<10; ++i){

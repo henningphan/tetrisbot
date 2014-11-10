@@ -13,7 +13,12 @@ public class TetrisMap {
 	private int linesClearCount;
 	final public int col;
 	final public int row;
+	// When adding a tetromino which columns was it on?
+	private int colLast;
 	
+	public int getcolLast(){
+		return colLast;
+	}
 	public TetrisMap(){
 		this(10,20);
 	}
@@ -36,6 +41,7 @@ public class TetrisMap {
 	}
 	// TODO throws indexoutofbound exception
 	public boolean addTetromino(int colidx, TetrominoAbs tet){
+		colLast = colidx;
 		Vector<Integer> diff= tet.getDiff();
 		// get height diff
 		for( int c = 0; c<+tet.col; ++c){
