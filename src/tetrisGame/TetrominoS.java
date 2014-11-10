@@ -21,7 +21,6 @@ public class TetrominoS extends TetrominoAbs{
 		list.add(Block.Blank);
 		list.add(Block.Fill);
 		super.map.add(list);
-		System.out.println("TetrominoS size: " + super.map.size());
 		super.col = 3;
 		super.row = 2;
 	}

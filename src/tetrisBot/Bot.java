@@ -27,16 +27,16 @@ public class Bot {
 		scores = new Vector<>();
 		gmList = new Vector<>();
 		Heuristic h;
-		h = new LowAsPossible().setWeight(6);
+		h = new LowAsPossible().setWeight(3);
 		listHeur.add(h);
-		h = new PunishColHoles().setWeight(14);
+		h = new PunishColHoles().setWeight(6);
 		listHeur.add(h);
-		h = new Smooth().setWeight(1);
+		h = new Smooth().setWeight(0);
 		listHeur.add(h);
 		h = new AvoidGameOver().setWeight(100);
 		listHeur.add(h);
-//		h = new Diagonal().setWeight(7);
-//		listHeur.add(h);
+		h = new Wells().setWeight(1	);
+		listHeur.add(h);
 	}
 	public void createGmList(TetrominoAbs piece){
 		gmList.clear();
@@ -78,7 +78,9 @@ public class Bot {
 		calculateScores();
 		pickLowestScoreAsGm();
 	}
-	
+	static void customBot(Vector<Integer> weigts, int seed, boolean print){
+		
+	}
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		File debugFile = new File("TetrisBot.debug");
 		debugFile.delete();
@@ -95,9 +97,8 @@ public class Bot {
 		Bot bot = new Bot();
 		int linesClrCount = 0;
 		int i;
-		for( i=1; i<1000;++i){
+		for( i=1; i<15000;++i){
 			TetrominoAbs piece = bag.next();
-			System.out.println(piece);
 			bot.next(piece);
 			linesClrCount+= bot.gm.getLinesCleared();
 			writer.println(bot.gm.printMap());
