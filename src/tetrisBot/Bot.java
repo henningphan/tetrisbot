@@ -21,6 +21,8 @@ public class Bot {
 	private Vector<Heuristic> listHeur;
 	public Vector<TetrisMap> gmList;
 	public Vector<Integer> scores;
+	private PrintWriter writer;
+	
 	public Bot(){
 		gm = new TetrisMap();
 		listHeur= new Vector<>();
@@ -37,6 +39,46 @@ public class Bot {
 		listHeur.add(h);
 		h = new Wells().setWeight(1	);
 		listHeur.add(h);
+	}
+	public Bot(boolean print, Vector<Integer> weights){
+		gm = new TetrisMap();
+		listHeur= new Vector<>();
+		scores = new Vector<>();
+		gmList = new Vector<>();
+		Heuristic h;
+		h = new Wells().setWeight(weights.get(0));
+		listHeur.add(h);
+		h = new Smooth().setWeight(weights.get(1));
+		listHeur.add(h);
+		h = new LowAsPossible().setWeight(weights.get(2));
+		listHeur.add(h);
+		h = new PunishColHoles().setWeight(weights.get(3));
+		listHeur.add(h);
+
+		
+		
+		h = new AvoidGameOver().setWeight(100);
+		listHeur.add(h);
+		if(print){
+			File debugFile = new File("TetrisBot.debug");
+			debugFile.delete();
+			try {
+				debugFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				writer = new PrintWriter(debugFile, "UTF-8");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	public void createGmList(TetrominoAbs piece){
 		gmList.clear();
@@ -78,42 +120,52 @@ public class Bot {
 		calculateScores();
 		pickLowestScoreAsGm();
 	}
-	static void customBot(Vector<Integer> weigts, int seed, boolean print){
-		
-	}
-	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-		File debugFile = new File("TetrisBot.debug");
-		debugFile.delete();
-		try {
-			debugFile.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void writeln(String line){
+		if(writer != null){
+			writer.println(line);
+			writer.flush();
 		}
-		PrintWriter writer = new PrintWriter(debugFile, "UTF-8");
-		
-		
-		TetrominoBag bag = new TetrominoBag(0);
-		Bot bot = new Bot();
+	}
+	public void writeClose(){
+		if(writer!= null){
+			writer.close();
+		}
+	}
+	static void customBot(Vector<Integer> weights, int seed, 
+			boolean print, int pieces){
+		TetrominoBag bag = new TetrominoBag(seed);
+		Bot bot = new Bot(print, weights);
 		int linesClrCount = 0;
 		int i;
-		for( i=1; i<15000;++i){
+		for( i=1; i<pieces;++i){
 			TetrominoAbs piece = bag.next();
 			bot.next(piece);
 			linesClrCount+= bot.gm.getLinesCleared();
-			writer.println(bot.gm.printMap());
+			bot.writeln(bot.gm.printMap());
 			if(bot.gm.isGameOver()){
 				System.out.println("game over:" + i);
 				break;
 			}
 	
 		}
-		
 		System.out.println(bot.gm.printMap());
 		System.out.println(bot.gm.getHighestColSize());
 		System.out.println("pieces placed: " + i+", linesCleared: " + linesClrCount);
-		writer.close();
-		
+		bot.writeClose();
+	}
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+		Vector<Integer> weights = new Vector<>();
+		weights.add(1); //well
+		weights.add(0); //smooth
+		weights.add(3); //lowAsPossible
+		weights.add(6); //punishHoles
+						// avoidGameOver(100);
+		customBot(weights,7,true,1000);
+		System.exit(0);
+		for(int i=0; i<10; ++i){
+			customBot(weights, i, false, 15000);
+			System.out.println("Iteration: " +i);
+		}
 	}
 	/**
 	 *  Features, diagonal, Wells
