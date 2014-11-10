@@ -9,7 +9,7 @@ public class LowAsPossible extends Heuristic {
 
 
 	@Override
-	public int calculate(TetrisMap gm) {
+	public double calculate(TetrisMap gm) {
 		int maxHeigt=0;
 		for(LinkedList<Block> li: gm.map){
 			maxHeigt = li.size()>maxHeigt?li.size():maxHeigt;

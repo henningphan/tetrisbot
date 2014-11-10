@@ -9,7 +9,7 @@ public class PunishColHoles extends Heuristic {
 
 
 	@Override
-	public int calculate(TetrisMap gm) {
+	public double calculate(TetrisMap gm) {
 		int holeCount = 0;
 		for(LinkedList<Block> li: gm.map){
 			boolean holeFound= false;

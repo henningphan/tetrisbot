@@ -5,7 +5,7 @@ import tetrisGame.TetrisMap;
 public class Wells extends Heuristic{
 
 	@Override
-	public int calculate(TetrisMap gm) {
+	public double calculate(TetrisMap gm) {
 		int count = 0;
 		for(int i=0;i<gm.map.size(); ++i){
 			int size = gm.map.get(i).size();

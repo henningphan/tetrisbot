@@ -9,7 +9,7 @@ public class Smooth extends Heuristic {
 
 
 	@Override
-	public int calculate(TetrisMap gm) {
+	public double calculate(TetrisMap gm) {
 		int lastHeight = gm.map.get(0).size();
 		int count=0;
 		for(int i=1; i<gm.map.size()-1; ++i){

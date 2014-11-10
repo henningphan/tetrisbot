@@ -58,6 +58,8 @@ public class Bot {
 		listHeur.add(h);
 		h = new LandingHeight().setWeight(weights.get(5));
 		listHeur.add(h);
+		h = new RowTransitions().setWeight(weights.get(6));
+		listHeur.add(h);
 		
 		
 		h = new AvoidGameOver().setWeight(100);
@@ -158,16 +160,17 @@ public class Bot {
 	}
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		Vector<Integer> weights = new Vector<>();
-		weights.add(1); //well
+		weights.add(0); //well
 		weights.add(0); //smooth
-		weights.add(3); //lowAsPossible
-		weights.add(6); //punishHoles
+		weights.add(2); //lowAsPossible
+		weights.add(0); //punishHoles
 		weights.add(0); //clearLineBonus
 		weights.add(0); //LandingHeight
+		weights.add(1); //RowTransitions
 						// avoidGameOver(100);
 //		customBot(weights,7,true,40000);
-		for(int i=0; i<10; ++i){
-			customBot(weights, i, false, 40000);
+		for(int i=0; i<1; ++i){
+			customBot(weights, i, true, 40000);
 			System.out.println("Iteration: " +i);
 		}
 	}

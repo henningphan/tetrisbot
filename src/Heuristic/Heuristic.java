@@ -3,15 +3,15 @@ package Heuristic;
 import tetrisGame.TetrisMap;
 
 public abstract class Heuristic {
-	protected int weight;
-	public Heuristic setWeight(int weight){
+	protected double weight;
+	public Heuristic setWeight(double weight){
 		this.weight = weight;
 		return this;
 	}
-	public int getWeight(){
+	public double getWeight(){
 		return weight;
 	}
-	public abstract int calculate(TetrisMap gm);
+	public abstract double calculate(TetrisMap gm);
 	public String toString(){
 		return "Heuristic base class";
 	}

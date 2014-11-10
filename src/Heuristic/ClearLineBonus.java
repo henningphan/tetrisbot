@@ -6,7 +6,7 @@ import tetrisGame.TetrisMap;
 public class ClearLineBonus extends Heuristic{
 
 	@Override
-	public int calculate(TetrisMap gm) {
+	public double calculate(TetrisMap gm) {
 		return gm.getLinesCleared()*weight;
 	}
 
