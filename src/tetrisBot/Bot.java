@@ -20,7 +20,7 @@ public class Bot {
 	public TetrisMap gm;
 	private Vector<Heuristic> listHeur;
 	public Vector<TetrisMap> gmList;
-	public Vector<Integer> scores;
+	public Vector<Double> scores;
 	private PrintWriter writer;
 	
 	public Bot(){
@@ -40,7 +40,7 @@ public class Bot {
 		h = new Wells().setWeight(1	);
 		listHeur.add(h);
 	}
-	public Bot(boolean print, Vector<Integer> weights){
+	public Bot(boolean print, Vector<Double> weights){
 		gm = new TetrisMap();
 		listHeur= new Vector<>();
 		scores = new Vector<>();
@@ -59,6 +59,8 @@ public class Bot {
 		h = new LandingHeight().setWeight(weights.get(5));
 		listHeur.add(h);
 		h = new RowTransitions().setWeight(weights.get(6));
+		listHeur.add(h);
+		h = new ColTransitions().setWeight(weights.get(7));
 		listHeur.add(h);
 		
 		
@@ -97,8 +99,8 @@ public class Bot {
 			piece.rotateRight();
 		}
 	}
-	public int calculateScore(TetrisMap map){
-		int score = 0;
+	public double calculateScore(TetrisMap map){
+		double score = 0;
 		for(Heuristic h: listHeur){
 			score+=h.calculate(map);
 		}
@@ -110,7 +112,7 @@ public class Bot {
 		}
 	}
 	public void pickLowestScoreAsGm(){
-		int highest = Integer.MAX_VALUE;
+		double highest = Double.MAX_VALUE;
 		int index=0;
 		for(int i=0; i<scores.size(); ++i){
 			if( scores.get(i) < highest){
@@ -136,7 +138,7 @@ public class Bot {
 			writer.close();
 		}
 	}
-	static void customBot(Vector<Integer> weights, int seed, 
+	static void customBot(Vector<Double> weights, int seed, 
 			boolean print, int pieces){
 		TetrominoBag bag = new TetrominoBag(seed);
 		Bot bot = new Bot(print, weights);
@@ -159,19 +161,21 @@ public class Bot {
 		bot.writeClose();
 	}
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-		Vector<Integer> weights = new Vector<>();
-		weights.add(0); //well
-		weights.add(0); //smooth
-		weights.add(2); //lowAsPossible
-		weights.add(0); //punishHoles
-		weights.add(0); //clearLineBonus
-		weights.add(0); //LandingHeight
-		weights.add(1); //RowTransitions
+		Vector<Double> weights = new Vector<>();
+		weights.add(1.0); //well
+		weights.add(0.0); //smooth
+		weights.add(3.0); //lowAsPossible
+		weights.add(9.0); //punishHoles
+		weights.add(0.0); //clearLineBonus
+		weights.add(0.1); //LandingHeight
+		weights.add(0.0); //RowTransitions
+		weights.add(0.0); //ColTransitions
 						// avoidGameOver(100);
 //		customBot(weights,7,true,40000);
-		for(int i=0; i<1; ++i){
-			customBot(weights, i, true, 40000);
+		for(int i=8; i<=8; ++i){
+			customBot(weights, i, false, 200000);
 			System.out.println("Iteration: " +i);
+			System.out.println();
 		}
 	}
 	/**
