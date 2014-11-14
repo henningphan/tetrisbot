@@ -25,7 +25,8 @@ public class Wells extends Heuristic{
 			int sizePrev = gm.map.get(i-1).size();
 			if( size < sizeNext && size < sizePrev){
 				int min = Math.min(sizeNext, sizePrev);
-				count += min -size;
+				int diff = min-size;
+				count += diff;
 			}
 		}
 		return count*weight;
